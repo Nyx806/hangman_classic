@@ -15,7 +15,7 @@ func main() {
 	}
 }
 
-func readFile() ([]string, error) {
+func readFile() (string, error) {
 	var list []string
 	file, err := os.Open("words.txt")
 	if err != nil {
@@ -33,5 +33,8 @@ func readFile() ([]string, error) {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-	return list, nil
+
+	randIndex := rand.Intn(len(list))
+	fmt.Println(list[randIndex])
+	return list[randIndex], nil
 }
