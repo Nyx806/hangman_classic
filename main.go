@@ -10,30 +10,11 @@ import (
 
 func main() {
 	var letter string
-	list, err := readFile()
-	var word []rune = []rune(list)
+	var word []rune
 	var underscore []rune
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(string(word))
-	for i := 0; i < len(word); i++ {
-		underscore = append(underscore, '_')
-	}
-	underscore = append(underscore)
-	fmt.Print("Enter a letter: ")
-	fmt.Scanln(&letter)
-	for i := 0; i < 10; i++ {
-		if string(word[i]) == letter {
-			fmt.Print(string(word[i]))
-		} else {
-			fmt.Print("_")
-		}
-	}
-}
-
-func readFile() (string, error) {
 	var list []string
+
+	/* readfile  */
 	file, err := os.Open("words.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -52,5 +33,34 @@ func readFile() (string, error) {
 	}
 
 	randIndex := rand.Intn(len(list))
-	return list[randIndex], nil
+	word = []rune(list[randIndex])
+	/* end readfile */
+
+	randIndexWord := rand.Intn(len(word))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(word))
+	for i := 0; i < len(word); i++ {
+		underscore = append(underscore, '_')
+	}
+	for i := 0; i < 10; i++ {
+		underscore[randIndexWord] = word[randIndexWord]
+		fmt.Println(string(underscore))
+		fmt.Print("Enter a letter: ")
+		fmt.Scanln(&letter)
+
+		for i := 0; i < len(word); i++ {
+
+			if string(word[i]) == letter {
+				underscore[i] = word[i]
+			}
+		}
+
+		if string(word) == string(underscore) {
+			fmt.Println("You win!")
+			break
+		}
+	}
 }
