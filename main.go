@@ -6,6 +6,8 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strconv"
+	"time"
 )
 
 func main() {
@@ -13,10 +15,11 @@ func main() {
 }
 
 func jeu() {
+	var remainLifeStr string
+	var remainLife int = 9
 	var life int = -1
 	var letter string
 	var underscore []rune
-	//var count int
 	var index int
 	word := readFile()
 
@@ -25,9 +28,22 @@ func jeu() {
 		underscore = append(underscore, '_')
 	}
 	for i := 0; i < 10; i++ {
-		fmt.Println(string(underscore) + " ")
-		fmt.Print("Enter a letter: ")
+		fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+		fmt.Println("")
+		fmt.Println("")
+		fmt.Println("")
+		affichage(string(underscore))
+		fmt.Print("\n")
+		fmt.Print("\n")
+		affichage("Enter a letter: ")
+		fmt.Println("")
 		fmt.Scanln(&letter)
+		remainLifeStr = strconv.Itoa(remainLife)
+
+		if remainLife != 1 || remainLife == 1 {
+			affichage(" wrong you have" + " " + remainLifeStr + " " + "lives left")
+			fmt.Println("")
+		}
 
 		for i := 0; i < len(word); i++ {
 			if string(word[i]) == letter {
@@ -37,19 +53,24 @@ func jeu() {
 
 		}
 
-		if string(word[index]) != letter {
-			fmt.Println(life)
+		if string(word[index]) != letter || letter == "" {
+			remainLife = 7 - life
 			life = life + 1
 			lign := life*7 + life
 
 			for i := lign; i < lign+7; i++ {
 				fmt.Println(readHangman()[i])
 			}
+			fmt.Println("")
+		}
+
+		if remainLife == -1 {
+			fmt.Println("You lose! Try again")
 		}
 
 		if string(word) == string(underscore) {
-			fmt.Println(string(underscore))
 			fmt.Println("You win!")
+			break
 		}
 	}
 }
@@ -113,4 +134,11 @@ func draw(min int, max int) []string {
 		newtab = append(newtab, tab[i])
 	}
 	return newtab
+}
+
+func affichage(n string) {
+	for i := 0; i < len(n); i++ {
+		fmt.Print(string(n[i]))
+		time.Sleep(time.Duration(1) * time.Millisecond)
+	}
 }
