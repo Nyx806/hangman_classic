@@ -15,33 +15,50 @@ func main() {
 }
 
 func jeu() {
+	var choise string
+	var user string
+	var green string = "\033[32m"
+	var reset string = "\033[0m"
+
+	affichage(green + "Enter your username : " + reset)
+	fmt.Scanln(&user)
+
+	affichage(green + "Welcome to Hangman game " + user + " ! \n" + reset)
+	affichage(green + "you have the choise betwen 3 dificulty : \n" + reset)
+	affichage(green + "easy \n" + reset)
+	affichage(green + "medium \n" + reset)
+	affichage(green + "hard \n" + reset)
+	affichage(green + "please make your choise : " + reset)
+	fmt.Scanln(&choise)
+
 	var remainLifeStr string
 	var remainLife int = 9
 	var life int = -1
 	var letter string
 	var underscore []rune
 	var index int
-	word := readFile()
+
+	word := readFile(choise)
 
 	fmt.Println(string(word))
 	for i := 0; i < len(word); i++ {
 		underscore = append(underscore, '_')
 	}
 	for i := 0; i < 10; i++ {
-		fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+		fmt.Println(green + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + reset)
 		fmt.Println("")
 		fmt.Println("")
 		fmt.Println("")
-		affichage(string(underscore))
+		affichage(green + string(underscore) + reset)
 		fmt.Print("\n")
 		fmt.Print("\n")
-		affichage("Enter a letter: ")
-		fmt.Println("")
+		affichage(green + "Enter a letter: " + reset)
 		fmt.Scanln(&letter)
 		remainLifeStr = strconv.Itoa(remainLife)
+		fmt.Println("")
 
 		if remainLife != 1 || remainLife == 1 {
-			affichage(" wrong you have" + " " + remainLifeStr + " " + "lives left")
+			affichage(green + " you have" + " " + remainLifeStr + " " + "lives left" + reset)
 			fmt.Println("")
 		}
 
@@ -59,31 +76,40 @@ func jeu() {
 			lign := life*7 + life
 
 			for i := lign; i < lign+7; i++ {
-				fmt.Println(readHangman()[i])
+				fmt.Println(green + readHangman()[i] + reset)
 			}
 			fmt.Println("")
 		}
 
 		if remainLife == -1 {
-			fmt.Println("You lose! Try again")
+			fmt.Println(green + "You lose! Try again" + reset)
 		}
 
 		if string(word) == string(underscore) {
-			fmt.Println("You win!")
+			fmt.Println(green + "You win!" + reset)
 			break
 		}
 	}
 }
 
-func readFile() []rune {
+func readFile(r string) []rune {
 
 	var word []rune
 	var list []string
+	var file *os.File
+	var err error
+	if r == "easy" {
+		file, err = os.Open("facile.txt")
+	} else if r == "medium" {
+		file, err = os.Open("moyen.txt")
+	} else if r == "hard" {
+		file, err = os.Open("difficile.txt")
+	}
 
-	file, err := os.Open("words.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	defer file.Close()
 
 	// Read file line by line
