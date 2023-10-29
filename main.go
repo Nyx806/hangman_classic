@@ -30,7 +30,7 @@ func jeu() {
 	affichage(green + "select your language [fr] [en] : " + reset) // demande a l'utilisateur de choisir sa langue
 	fmt.Scanln(&lang)
 
-	// boucle qui va permettre de faire tourner le jeu tant que l'utilisateur n'a pas choisi une langue correcte
+	// boucle qui va permettre de faire tourner la demande en boucle  tant que l'utilisateur n'a pas choisi une langue correcte
 
 	for lang != "fr" && lang != "en" {
 		affichage(green + "incorrect answer please select your language [fr] [en] : " + reset) // demande a l'utilisateur de choisir sa langue
@@ -39,7 +39,7 @@ func jeu() {
 
 	// phase de démarage du jeu avec les règles et le choix de la difficulté
 	fmt.Println("")
-	selectLanguage := selectLanguage(lang)
+	selectLanguage := selectLanguage(lang) // on récupère la langue choisie par l'utilisateur
 	affichage(green + bold + selectLanguage["welcomeMsg"] + " \n " + reset)
 	fmt.Println("")
 
@@ -100,8 +100,6 @@ func jeu() {
 
 	word := readFile(choise, lang) // on récupère le mot
 
-	/* fmt.Println(string(word)) */
-
 	// initialisation du tableau de caractère qui va contenir les underscore qui vont s'afficher a l'écran et qui seront remplacer par les lettres trouvées
 
 	for i := 0; i < len(word); i++ { // boucle qui va parcourir la longueur du mot
@@ -118,12 +116,12 @@ func jeu() {
 		fmt.Println("")
 		fmt.Println("")
 		underscoreBis := string(underscore)
-		convertUnderscoreBis, _, _ := transform.String(encoder, underscoreBis)
+		convertUnderscoreBis, _, _ := transform.String(encoder, underscoreBis) // on converti le tableau de rune en string pour pouvoir l'afficher
 		affichage(green + convertUnderscoreBis + reset)
 		fmt.Print("\n")
 		fmt.Print("\n")
-		affichage(green + selectLanguage["guessMsg"] + reset)
-		fmt.Scanln(&letter)
+		affichage(green + selectLanguage["guessMsg"] + reset) // on demande a l'utilisateur d'entrer une lettre
+		fmt.Scanln(&letter)                                   // on récupère la lettre entrée par l'utilisateur
 		fmt.Println("")
 
 		/* fmt.Println(remainLife) */
@@ -240,7 +238,7 @@ func jeu() {
 		// cette fonction sert a afficher les propriétés du jeu pour pouvoir débuger plus facilement
 
 		if letter == "debug" { // si l'utilisateur rentre debug
-			debug(letter, lang, remainLifeStr, green, reset, interupEasy, interupMedium, interupHard, choise, string(word), point, remainLife)
+			debug(letter, lang, remainLifeStr, green, reset, interupEasy, interupMedium, interupHard, choise, string(word), point, remainLife) // on appelle la fonction qui va afficher les propriétés du jeu
 		}
 
 	}
@@ -276,17 +274,17 @@ func readFile(r string, lang string) []rune {
 		if r == selectLanguage["easy"] {
 			file, err = os.Open("facile.txt") // on ouvre le fichier
 		} else if r == selectLanguage["medium"] {
-			file, err = os.Open("moyen.txt")
+			file, err = os.Open("moyen.txt") // on ouvre le fichier
 		} else if r == selectLanguage["hard"] {
-			file, err = os.Open("difficile.txt")
+			file, err = os.Open("difficile.txt") // on ouvre le fichier
 		}
 	} else if lang == "en" {
 		if r == selectLanguage["easy"] {
-			file, err = os.Open("facileEng.txt")
+			file, err = os.Open("facileEng.txt") // on ouvre le fichier
 		} else if r == selectLanguage["medium"] {
-			file, err = os.Open("moyenEng.txt")
+			file, err = os.Open("moyenEng.txt") // on ouvre le fichier
 		} else if r == selectLanguage["hard"] {
-			file, err = os.Open("difficileEng.txt")
+			file, err = os.Open("difficileEng.txt") // on ouvre le fichier
 		}
 	}
 
